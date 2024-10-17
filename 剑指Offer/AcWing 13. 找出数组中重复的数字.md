@@ -27,31 +27,40 @@
 ```
 
 ```
+# 时间复杂度O(N),空间复杂度O(1)
 class Solution(object):
     def duplicateInArray(self, nums):
         """
         :type nums: List[int]
         :rtype int
         """
-        # 判断所有数字是否满足0-n-1的条件
         n = len(nums)
-        for num in nums:
-            if num < 0 or num > n:
-                return -1
-        
-        # 把所有数字移动到正确的位置
-        for i in range(n):
-            # 理想情况下 nums[i] == i
-            while nums[nums[i]] != nums[i]:
-                # 交换当前位置的数和nums[i]位置的数
+        for i in nums:
+            if i < 0 or i > n - 1: return -1
+
+        # 将数字挪到指定的位置
+        for i in range(n): # 当前遍历的是nums[i]，目标是nums[i] = i
+            # 如果当前位置上的数的位置不对，则将当前数交换到正确位置，交换的前提是要交换的位置上的数也不对
+
+            # 这里用循环的原因是交换完之后当前位置i上的数字仍然可能不对，不对就继续交换
+            while nums[i] != i and nums[i] != nums[nums[i]]: 
+                # 将当前位置的数字挪到正确的位置
                 x = nums[i]
                 y = nums[nums[i]]
+
                 nums[i] = y
-                nums[x] = x
-                
-            if nums[i] != i and nums[nums[i]] == nums[i]:
+                nums[x] = x # 注意这里不能写nums[nums[i]]，因为上一步的已经将nums[i]变为y了
+
+            # 如果当前位置的数的正确位置被占了，说明至少有两个一样的数字
+            if nums[i] != i and nums[i] == nums[nums[i]]:
                 return nums[i]
-           
+
+
         return -1
+
+作者：jupyter
+链接：https://www.acwing.com/activity/content/code/content/8862948/
+来源：AcWing
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 
